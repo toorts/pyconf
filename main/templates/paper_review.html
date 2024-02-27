@@ -1,0 +1,43 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_chair_reviewer_applicaiton.css' %}">
+{% endblock %}
+{% block content %}
+    <h2><a href="conference?conf_name={{conf_name}}">{{conf_name}}</a>[{{ paper_name }}]<h2>
+
+    <div id="divMainContainer" class="ui horizontal segments">
+        <div style="display: flex; justify-content: center;flex-direction: column;width: 100%;">
+
+            <div style="display: flex;flex-direction: row">
+                <div style="display: flex;flex-direction: column;flex-basis: 50%;">
+                    <h3 style="text-align: center">Рецензия аннотации</h3>
+                    <p style="text-align: justify;font-size: medium; font-family: Consolas inherit; font-weight: normal;">
+                        {% if review.review_text_abstract %}
+                            {{ review.review_text_abstract }}
+                        {% else %}
+                            пока не получена
+                        {% endif %}
+
+                    </p>
+                </div>
+
+
+                <div style="display: flex;flex-direction: column;flex-basis: 50%;">
+                    <h3 style="text-align: center">Рецензия тезисов</h3>
+                    <p style="text-align: justify;font-size: medium; font-family: Consolas inherit; font-weight: normal;">
+                    {% if review.review_text_paper %}
+                            {{ review.review_text_paper }}
+                        {% else %}
+                            пока не получена
+                        {% endif %}
+                </p>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+{% endblock %}

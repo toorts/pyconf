@@ -1,0 +1,29 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_signup_login_form.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="divFormContainer">
+        <div class="divLoginSignup">
+            <form class="ui form" action="sign_up_handle" method="post">
+            {% csrf_token %}
+                <input type="text" placeholder="e-mail" name="email">
+                 <br>
+                <input type="password" placeholder="пароль" name="password">
+                 <br>
+                <input type="text" placeholder="имя" name="name">
+                 <br>
+                <input type="radio" name="user_type" value="chair">Руководитель
+                 <br>
+                <input type="radio" name="user_type" value="reviewer">Рецензент
+                <br>
+                <input type="radio" name="user_type" value="author">Участник
+                <br>
+                <div class="ui center aligned fluid teal button" onclick="(function(e){e.parentNode.submit();})(this)">Зарегистрироваться</div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

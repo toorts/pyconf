@@ -1,0 +1,47 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_chair_reviewer_applicaiton.css' %}">
+{% endblock %}
+{% block content %}
+    <h2><a href="conference?conf_name={{conf_name}}">{{conf_name}}</a>[{{ paper_name }}]</h2>
+    <div id="divMainContainer" class="ui horizontal segments">
+        <div class="divTableContainer divChildHalfSpace ui segment">
+        <h2>Рецензенты</h2>
+        <table class="ui sortable celled table"  cellspacing="10">
+            <tr>
+                <th>
+                    Имя рецензента
+                </th>
+                <th>
+                    Рецензия
+                </th>
+
+            </tr>
+            {% for review in reviews %}
+
+                <tr>
+
+                    <td>
+                        {{ review.reviewer.name }}
+                    </td>
+
+                    <td>
+                        <a class="viewUserButton" href="paper_review?review_id={{ review.id }}">Читать рецензию</a>
+                    </td>
+
+
+
+                </tr>
+
+
+            {% endfor %}
+        </table>
+
+        </div>
+
+    </div>
+    <script src="{% static '/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static '/js/semantic.js' %}"></script>
+    <script src="{% static '/js/js_conferences.js' %}"></script>
+{% endblock %}

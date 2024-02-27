@@ -1,0 +1,23 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_signup_login_form.css' %}">
+{% endblock %}
+{% block content %}
+    {{ message }}
+    <div class="divFormContainer">
+        <div class="divLoginSignup">
+            <form class="ui form" action="login_handle" method="post">
+            {% csrf_token %}
+                <input type="text" placeholder="e-mail" name="email">
+                 <br>
+                <input type="password" placeholder="пароль" name="password">
+                 <br>
+
+                <div class="ui center aligned fluid teal button" onclick="(function(e){e.parentNode.submit();})(this)">Войти</div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

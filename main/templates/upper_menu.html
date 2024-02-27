@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Python Conference</title>
+    {% block head %}
+    {% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_general.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style_upper_menu.css' %}">
+    <link rel="stylesheet" href="{% static '/css/semantic.css' %}">
+
+
+</head>
+
+
+<div class="ui raised segment"><body>
+    <div id="menucotainer" class="ui inverted violet massive menu">
+        <a  class="item" href="/">Домой</a>
+        <a class="item" href="conferences">Мероприятия</a>
+        {% if islogged_in == False %}
+        <a class="item" href="login">Вход</a>
+        {% endif %}
+        {% if is_admin_logged_in %}
+            <a class="item" href="chair_reviewer_application">Заявки</a>
+            {%  elif user_type == "ba78a4b507e20f7d159503078770b0b1e3865e8ab6a9a85ab49a5486" %}
+            <a class="item" href="author_papers">Ваши работы</a>
+            {%  elif user_type == "4f0373fb264a3a25bc997596ab16e6de0dbfca018ebefca11e9f1492" %}
+            <a class="item" href="reviewer_assignments">Рецензируемые работы</a>
+            {% else %}
+            <a class="item" href="sign_up" {% if islogged_in == True %}
+            style="visibility: hidden;"
+        {% endif %}>Регистрация</a>
+        {% endif %}
+        {% if islogged_in == True %}
+        <a class=" right aligned item" href="logout">Выход</a>
+        {% endif %}
+
+
+    </div>
+{% block content %}
+{% endblock %}
+    <div class="ui inverted center aligned segment"> <h6 class="ui violet inverted header">Веб-разработка на Python (GeekBrains 2024)</h6></div>
+</body>
+
+</html>

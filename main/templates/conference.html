@@ -1,0 +1,131 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_conference.css' %}">
+{% endblock %}
+{% block content %}
+    <h2>{{ conf_name }}</h2>
+    <div id="divPaperMainContainer" class="ui horizontal segments">
+        <div id="divPaperListContainer" class="divChildHalfSpace ui segment">
+            <table class="ui sortable celled table"  cellspacing="10">
+                <tr>
+                    <th>
+                        Название
+                    </th>
+                    <th>
+                        Статус
+                    </th>
+                    <th>
+                        Автор
+                    </th>
+                    <th>
+                        Email автора
+                     </th>
+                    {% if chair_hashed_user_type == user_type %}
+                    <th>
+                        Рецензент
+                    </th>
+                    {% endif %}
+                    {% if chair_hashed_user_type == user_type %}
+                    <th>
+                        Смотреть
+                    </th>
+                    {% endif %}
+                    {% if chair_hashed_user_type == user_type %}
+                    <th>
+                        Принять
+                    </th>
+                    {% endif %}
+                    {% if chair_hashed_user_type == user_type %}
+                    <th>
+                        Отклонить
+                    </th>
+                    {% endif %}
+                </tr>
+                {% for submit in submits %}
+
+                        <tr>
+                            <td>
+                                {{ submit.0.paper.name }}
+                            </td>
+                            <td>
+                                    <p style="border-radius:10px;color:#fff;background:{% if submit.0.submit_status in pending %}
+                                        #777;
+                                        {% endif %}
+
+                                        {% if submit.0.submit_status in rejected %}
+                                        #af1e01;
+                                        {% endif %}
+                                            {% if submit.0.submit_status in accepted %}
+                                        #229954;
+                                        {% endif %}">
+
+
+                                {{ submit.0.submit_status }}
+                                    </p>
+
+                            </td>
+                            <td>
+                                {{ submit.0.author.name }}
+                            </td>
+                            <td>
+                                <a href="mailto:{{ submit.0.author.email }}">email</a>
+                            </td>
+                            {% if chair_hashed_user_type == user_type %}
+                            <td>
+                                <a href="assign_paper?paper_id={{ submit.0.paper.id }}&conf_name={{ conf_name }}">Назначить</a>
+                            </td>
+                            {% endif %}
+                            {% if chair_hashed_user_type == user_type %}
+                            <td>
+                                <a class="viewUserButton" href="paper_reviews?paper_id={{ submit.0.paper.id }}">Рецензия</a>
+                            </td>
+                            {% endif %}
+                            <td>
+                            {% if chair_hashed_user_type == user_type and submit.0.submit_status not in accept_strings %}
+                                {% if submit.1 %}
+                                <a class="acceptedUserButton" href="accept_reject_paper?is_accepted=True&submit_id={{ submit.0.id }}&conf_name={{ conf_name }}">Принять</a>
+                                    {% else %}
+                                    <p>Полный текст тезисов ещё не загружен</p>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+                            <td>
+                            {% if chair_hashed_user_type == user_type and submit.0.submit_status not in reject_strings %}
+                                {% if submit.1 %}
+                                <a class="rejectedUserButton" href="accept_reject_paper?is_accepted=False&submit_id={{ submit.0.id }}&conf_name={{ conf_name }}">Отклонить</a>
+                                {% endif %}
+                            {% endif %}
+                            </td>
+
+                        </tr>
+
+
+                {% endfor %}
+            </table>
+
+        </div>
+            {% if user_type == author_hashed_user_type%}
+        <div id="divPaperSubmitContainer" class="divChildHalfSpace ui segment">
+            <form class="ui form" id="formSubmitPaper" action="submit_paper" method="post">
+            {% csrf_token %}
+                <div class="field"><label>Название работы : </label>
+                    <select name="paper_id">
+                        {% for paper in available_papers %}
+                            <option value="{{ paper.id }}">{{ paper.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="hidden" name="conf_name" value="{{ conf_name }}">
+                <button id="buttonFormAddConference" type="submit">Зарегистрировать тезисы</button</div>
+            </form>
+
+        </div>
+
+            {% endif %}
+
+    </div>
+    <script src="{% static '/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static '/js/semantic.js' %}"></script>
+    <script src="{% static '/js/js_conferences.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_chair_reviewer_applicaiton.css' %}">
+{% endblock %}
+{% block content %}
+    <div id="divMainContainer" class="ui horizontal segments">
+        <div class="divTableContainer divChildHalfSpace ui segment">
+        <h2>Мои рецензии</h2>
+        <table class="ui sortable celled table"  cellspacing="10">
+            <tr>
+                <th>
+                    Название
+                </th>
+                <th>
+                    Руководитель
+                </th>
+                <th>
+                    Мероприятие
+                </th>
+                <th>
+                    Аннотация
+                </th>
+                <th>
+                    Тезисы
+                </th>
+                <th>
+                   Рецензия аннотации
+                </th>
+                <th>
+                    Рецензия тезисов
+                </th>
+            </tr>
+            {% for assignment_review in assignments_reviews %}
+
+                <tr>
+
+                    <td>
+                        {{ assignment_review.0.paper.name }}
+                    </td>
+                    <td>
+                        {{ assignment_review.0.chair.name }}
+                    </td>
+                    <td>
+                        {{ assignment_review.0.conference.name }}
+                    </td>
+                    <td>
+                        <a href="download_file?file_name={{ assignment_review.0.paper.abstract_file_path }}&file_type=abstract">Скачать</a>
+                    </td>
+                    <td>
+                        {% if assignment_review.2 %}
+                        <a href="download_file?file_name={{ assignment_review.0.paper.paper_file_path }}&file_type=paper">Скачать</a>
+                            {% else %}
+                            <p>Автор ещё не загрузил тезисы.</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                    {% if assignment_review.0.conference.paper_submission_deadline < time_now %}
+                        <p>Окончен приём реценций на аннотаций.</p>
+                    {% else %}
+                        {%  if not assignment_review.1 %}
+                            <a class="viewUserButton"  href="add_review?is_paper=False&paper_id={{ assignment_review.0.paper.id }}">Рецензировать</a>
+                        {% else %}
+                            <a class="yButtonAnchor" href="edit_review?is_paper=False&review_id={{ assignment_review.1.id }}&paper_id={{ assignment_review.0.paper.id }}">Редактировать рецензию</a>
+                        {% endif %}
+                    {% endif %}
+
+                    </td>
+
+                    <td>
+
+                    {% if assignment_review.0.conference.review_deadline < time_now %}
+                        <p>Окончен приём реценций на тезисы.</p>
+                    {% else %}
+                        {% if assignment_review.2 %}
+                        {%  if assignment_review.1.review_text_paper%}
+                            <a class="yButtonAnchor" href="edit_review?is_paper=True&review_id={{ assignment_review.1.id }}&paper_id={{ assignment_review.0.paper.id }}">Редактировать рецензию</a>
+                        {% else %}
+                            <a class="viewUserButton" href="add_review?is_paper=True&review_id={{ assignment_review.1.id }}&paper_id={{ assignment_review.0.paper.id }}">Рецензировать</a>
+
+                        {% endif %}
+                        {% endif %}
+                    {% endif %}
+
+
+
+                    </td>
+
+
+                </tr>
+
+
+            {% endfor %}
+        </table>
+
+        </div>
+
+    </div>
+    <script src="{% static '/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static '/js/semantic.js' %}"></script>
+    <script src="{% static '/js/js_conferences.js' %}"></script>
+{% endblock %}

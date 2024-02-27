@@ -1,0 +1,65 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_paper.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style_general.css' %}">
+    <link rel="stylesheet" href="{% static '/css/semantic.css' %}">
+    <style>
+    .pWarning {
+        margin-left: 40px;
+        color: #af1e01;
+        font-weight:bold ;
+    }
+    </style>
+
+{% endblock %}
+{% block content %}
+        <h2>[{{ paper_name }}]<h2>
+
+    <div id="divMainContainer" style="flex-direction: column;">
+        {% if can_update_abstract%}
+            <div id="divAbstractUpdateContainer">
+                <form class="ui form" action="update_paper_files" method="post" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    <input type="hidden" name="paper_id" value="{{ paper.id }}">
+                    <div class="field"><label>Файл аннотации : </label><input type="file" name="abstract_file" ></div>
+                    <div class="ui center aligned fluid teal button" onclick="(function(e){e.parentNode.submit();})(this)">Обновить аннотацию</div>
+                </form>
+            </div>
+        {% else %}
+            {% if abstract_submission_deadline_passed %}
+            <p class="pWarning">
+            Принятие аннотаций завершено.
+            </p>
+                {% endif %}
+        {% endif %}
+        {%if can_update_paper %}
+            <div id="divPaperUpdateContainer">
+                <form class="ui form" action="update_paper_files" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="paper_id" value="{{ paper.id }}">
+                    <div class="field"><label>Файл тезисов: </label><input type="file" name="paper_file" ></div>
+                    <div class="ui center aligned fluid teal button" onclick="(function(e){e.parentNode.submit();})(this)">Обновить тезисы</div>
+                </form>
+            </div>{% else %}
+            {% if paper_submission_deadline_passed %}
+            <p class="pWarning">
+            Принятие тезисов завершено.
+            </p>
+                {% endif %}
+
+        {% endif %}
+
+            <div id="divPaperLinksContainer">
+                {% if can_download_abstract %}
+                    <a class="yButtonAnchor" href="download_file?file_name={{ paper.abstract_file_path }}&file_type=abstract">Скачать аннотацию</a>
+                {% endif %}
+                {% if can_download_paper %}
+                    <a class="yButtonAnchor" href="download_file?file_name={{ paper.paper_file_path }}&file_type=paper">Скачать тезисы</a>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

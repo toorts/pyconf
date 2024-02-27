@@ -1,0 +1,56 @@
+{%extends "upper_menu.html" %}
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/css/style_chair_reviewer_applicaiton.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style_general.css' %}">
+    <link rel="stylesheet" href="{% static '/css/semantic.css' %}">
+
+{% endblock %}
+{% block content %}
+    <div id="divMainContainer" class="ui horizontal segments">
+        <div class="divTableContainer divChildHalfSpace ui segment">
+        <h3>Рецензенты - <a href="conference?conf_name={{conf_name}}">{{conf_name}}</a> [{{ paper_name}}]</h3>
+        <table class="ui sortable celled table"  cellspacing="10">
+            <tr>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Имя
+                </th>
+                <th>
+
+                </th>
+            </tr>
+            {% for reviewer_assign in reviewers_assigns %}
+
+                <tr>
+
+                    <td>
+                        {{ reviewer_assign.0.email }}
+                    </td>
+                    <td>
+                        {{ reviewer_assign.0.name }}
+                    </td>
+                    <td>
+                    {%  if not reviewer_assign.1 %}
+                        <a class="viewUserButton" href="assign_paper_handle?reviewer_email={{ reviewer_assign.0.email }}&paper_id={{ paper_id }}&conf_name={{ conf_name }}">Назначить</a>
+                    {% else %}
+                        Уже назначен
+                    {% endif %}
+                    </td>
+
+
+                </tr>
+
+
+            {% endfor %}
+        </table>
+
+        </div>
+
+    </div>
+    <script src="{% static '/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static '/js/semantic.js' %}"></script>
+    <script src="{% static '/js/js_conferences.js' %}"></script>
+{% endblock %}
