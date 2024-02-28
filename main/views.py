@@ -1,25 +1,28 @@
-from django.core.files.base import ContentFile
-from django.shortcuts import render
-from django.http import HttpResponse, Http404
-from main import models
+import os
+import datetime
 import hashlib
-from main import Utils
+
 from threading import Lock
 from threading import Thread
-from conferencesystem import settings
-import datetime
-from django.core.files.storage import FileSystemStorage
-import os
+
+from main import models
+from main import Utils
 from main import constants
+from conferencesystem import settings
+
+from django.core.files.storage import FileSystemStorage
+from django.core.files.base import ContentFile
+from django.shortcuts import render
+from django.shortcuts import redirect
+from django.http import HttpResponse, Http404
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.encoding import smart_str
-from django.shortcuts import redirect
+
 
 email_lock = Lock()
 
 
-# utility funcs
 def check_login(request):
     if request.COOKIES.get('password'):
         return True
